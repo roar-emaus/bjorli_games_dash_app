@@ -39,7 +39,6 @@ def file_to_table(filename: Path) -> List[Dict[str, any]]:
 
     """
     logger = logging.getLogger(__name__)
-    logger.setLevel(logging.DEBUG)
     logger.debug("Creating table from file {filename}")
     with open(filename, "r") as table_file:
         headers = table_file.readline().strip().split(",") + ["Total"]
@@ -57,7 +56,6 @@ def file_to_table(filename: Path) -> List[Dict[str, any]]:
 
 def table_to_file(filename: Path, table: List[Dict[str, any]]):
     logger = logging.getLogger(__name__)
-    logger.setLevel(logging.DEBUG)
     logger.debug(f"Writing BG score file {filename}")
     out_string = ",".join(list(table[0].keys())[:-1]) + "\n"
     for line in table[1:-1]:
@@ -70,7 +68,6 @@ def update_table_new_column(
     columns: Dict[str, any], rows: List[Dict[str, any]]
 ) -> List[Dict[str, any]]:
     logger = logging.getLogger(__name__)
-    logger.setLevel(logging.DEBUG)
     logger.debug(f"Adding new column")
     for col_name in [c["name"] for c in columns]:
         for row in rows:
@@ -92,7 +89,6 @@ def calculate_new_total(rows: List[Dict[str, any]]) -> List[Dict[str, any]]:
 
 def create_score_table(table: List[Dict[str, any]]):
     logger = logging.getLogger(__name__)
-    logger.setLevel(logging.DEBUG)
     logger.debug(f"Creating score table")
 
     columns = []
@@ -128,7 +124,6 @@ def create_score_table(table: List[Dict[str, any]]):
 
 def read_rules(filename: Path):
     logger = logging.getLogger(__name__)
-    logger.setLevel(logging.DEBUG)
     logger.debug(f"Reading BG rules from {filename}")
     markdown = dcc.Markdown(filename.read_text())
     return html.Div([markdown],)
@@ -136,7 +131,6 @@ def read_rules(filename: Path):
 
 def bg_layout(date: str):
     logger = logging.getLogger(__name__)
-    logger.setLevel(logging.DEBUG)
     date_verbose = datetime.datetime.strptime(date, "%Y%m").strftime("%B %Y") 
     logger.debug(f"Creating BG layout page for {date_verbose}")
     data_path = Path("data")/date
@@ -189,7 +183,6 @@ def bg_layout(date: str):
 )
 def new_column(n_clicks, timestamp, value, existing_columns, current_data):
     logger = logging.getLogger(__name__)
-    logger.setLevel(logging.DEBUG)
     logger.debug(f"new_column callback with: {ctx.triggered[0]['prop_id']}")
     match ctx.triggered[0]["prop_id"]:
         case "adding-column-button.n_clicks":
@@ -212,7 +205,6 @@ def new_column(n_clicks, timestamp, value, existing_columns, current_data):
     [State("score-board", "data")])
 def clicks(n_clicks, date, data):
     logger = logging.getLogger(__name__)
-    logger.setLevel(logging.DEBUG)
     if n_clicks > 0:
         filename = Path("data")/date/f"{int(time.time())}.csv"
         logger.debug(f"Trying to store table to file {filename}")
