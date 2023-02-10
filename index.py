@@ -1,21 +1,11 @@
-### Import Packages ###
 from pathlib import Path
 import datetime
 import dash
 from dash import dcc, html
 from dash.dependencies import Input, Output
 
-### Import Dash Instance and Pages ###
 from app import app
 from bjorli_games import *
-
-
-def get_bjorli_game_paths():
-    data_paths = []
-    for path in Path("data").iterdir():
-        date_verbose = datetime.datetime.strptime(path.name, "%Y%m").strftime("%B %Y") 
-        data_paths.append((path, date_verbose))
-    return data_paths
 
 
 page_container = html.Div(

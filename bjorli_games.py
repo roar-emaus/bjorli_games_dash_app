@@ -10,6 +10,14 @@ from pathlib import Path
 app = Dash(__name__)
 
 
+def get_bjorli_game_paths():
+    data_paths = []
+    for path in Path("data").iterdir():
+        date_verbose = datetime.datetime.strptime(path.name, "%Y%m").strftime("%B %Y") 
+        data_paths.append((path, date_verbose))
+    return data_paths
+
+
 def file_to_table(filename: Path) -> List[Dict[str, any]]:
     """Reads csv file on the form
         Deltager,sp1,sp2,sp3,sp4
@@ -35,8 +43,6 @@ def file_to_table(filename: Path) -> List[Dict[str, any]]:
             row[1:] = list(map(int, row[1:]))
             row.append(math.prod(row[1:]))
             table.append({})
-            print(headers)
-            print(row)
             for head, score in zip(headers, row, strict=True):
                 table[-1][head] = score
     table = sorted(table, key=lambda d: d["Total"])
@@ -48,7 +54,6 @@ def table_to_file(filename: Path, table: List[Dict[str, any]]):
     for line in table[1:-1]:
         out_string += ",".join(map(str, list(line.values())[:-1])) + "\n"
     out_string += ",".join(map(str, list(table[-1].values())[:-1]))
-    print(filename)
     filename.touch()    
     filename.write_text(out_string)
 
